@@ -48,13 +48,23 @@ function game() {
     //game is over
     if (snakeX < 0 || snakeX > columns*tableSize || snakeY < 0 || snakeY > rows*tableSize) {
         gameOver = true;
-        alert("Game Over");
     }
     
     //Drawing the table
     function drawTable() {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "#c6f6ff";
         ctx.fillRect(0, 0, table.width, table.height);
+        for (let i = 0; i < rows; i++) {
+            ctx.moveTo(i * tableSize, 0);
+            ctx.lineTo(i * tableSize, table.height);
+        }
+        for (let i = 0; i < columns; i++) {
+            ctx.moveTo(0, i * tableSize);
+            ctx.lineTo(table.width, i * tableSize);
+        }
+        ctx.strokeStyle = "#a9d8fc";
+        ctx.stroke();
+
     }
 
     //Drawing the score
@@ -66,7 +76,7 @@ function game() {
 
     //Drawing the apples
     function drawApple() {
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "#93b9fd";
         ctx.fillRect(appleX, appleY, tableSize, tableSize);
 
         //if the snake eats the apple, the snake grows
@@ -74,6 +84,7 @@ function game() {
             snakeBody.push([appleX, appleY]);
             placeApple();
             scoreNumber++;
+            scoreNumber.textContent = scoreNumber;
         }
         for (let i = snakeBody.length-1; i > 0; i--) {
             snakeBody[i] = snakeBody[i-1];
@@ -86,7 +97,11 @@ function game() {
 
     //Drawing the snake
     function drawSnake() {
-        ctx.fillStyle = "orange";
+        ctx.fillStyle = "#99c4f7 ";
+        ctx.shadowColor = '#92bdff';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 5;
+        ctx.shadowOffsetY = 5;
         snakeX += velocityX * tableSize;
         snakeY += velocityY * tableSize;
         ctx.fillRect(snakeX, snakeY, tableSize, tableSize);
@@ -98,9 +113,17 @@ function game() {
         for (let i = 0; i < snakeBody.length; i++) {
             if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
                 gameOver = true;
-                alert("Game Over");
             }
         }
+
+        //if the game is over, an image is displayed and the score disappears
+        if (gameOver) {
+            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.fillText("Game Over", 10, 20);
+            ctx.drawImage(document.getElementById("gameOver"), 0, 0, 750, 750);
+        }
+
 
         //if the game ends, the snake is reset
         if (gameOver) {
@@ -110,7 +133,10 @@ function game() {
             velocityY = 0;
             snakeBody = [];
             gameOver = false;
+            scoreNumber = 0;
+            placeApple();
         }
+
     }
 
     drawTable();
