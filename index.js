@@ -1,27 +1,30 @@
 //Creating the table for the snake game
-var table;
-var tableSize = 25;
-var columns = 30;
-var rows = 30;
-var ctx;
+let table;
+let tableSize = 25;
+let columns = 30;
+let rows = 30;
+let ctx;
 
 //Creating the snake
-var snakeX = tableSize * 5;
-var snakeY = tableSize * 5;
+let snakeX = tableSize * 5;
+let snakeY = tableSize * 5;
 
 //Creating the velocity of the snake
-var velocityX = 0;
-var velocityY = 0;
+let velocityX = 0;
+let velocityY = 0;
 
 //Creating the body of the snake
-var snakeBody = [];
+let snakeBody = [];
 
 //Creating the apples
-var appleX;
-var appleY;
+let appleX;
+let appleY;
+
+//create the score
+let scoreNumber = 0;
 
 //Game is over
-var gameOver = false;
+let gameOver = false;
 
 //When the window loads, the table is created and the apples are placed
 window.onload = function() {
@@ -42,8 +45,7 @@ function game() {
         return;
     }
     
-    //if game is over
-
+    //game is over
     if (snakeX < 0 || snakeX > columns*tableSize || snakeY < 0 || snakeY > rows*tableSize) {
         gameOver = true;
         alert("Game Over");
@@ -55,6 +57,13 @@ function game() {
         ctx.fillRect(0, 0, table.width, table.height);
     }
 
+    //Drawing the score
+    function drawScore() {
+        ctx.fillStyle = "black";
+        ctx.font = "20px Arial";
+        ctx.fillText("Score: " + scoreNumber, 10, 20);
+        }
+
     //Drawing the apples
     function drawApple() {
         ctx.fillStyle = "red";
@@ -64,6 +73,7 @@ function game() {
         if (snakeX == appleX && snakeY == appleY) {
             snakeBody.push([appleX, appleY]);
             placeApple();
+            scoreNumber++;
         }
         for (let i = snakeBody.length-1; i > 0; i--) {
             snakeBody[i] = snakeBody[i-1];
@@ -71,6 +81,7 @@ function game() {
         if (snakeBody.length) {
             snakeBody[0] = [snakeX, snakeY];
         }
+
     }
 
     //Drawing the snake
@@ -105,6 +116,7 @@ function game() {
     drawTable();
     drawSnake();
     drawApple();
+    drawScore();
 
     
 }
@@ -137,6 +149,4 @@ function keyPush(event) {
             break;
     }
 }
-
-
 

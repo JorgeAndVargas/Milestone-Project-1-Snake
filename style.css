@@ -4,3 +4,8 @@ body {
     color: white;
     background-color: rgb(255, 116, 61);
 }
+
+#score {
+    font-size: 2em;
+    margin: 0;
+}
