@@ -27,39 +27,39 @@ let scoreNumber = 0;
 //Game is over
 let gameOver = false;
 
-//When the window loads, a title screen pops up with a start button that starts the game
+// //When the window loads, a title screen pops up with a start button that starts the game
+// window.onload = function() {
+//     table = document.getElementById("table");
+//     table.width = rows * tableSize;
+//     table.height = columns * tableSize;
+
+//     ctx = table.getContext("2d");
+
+//     ctx.fillStyle = "#8f9d99";
+//     ctx.fillRect(0, 0, table.width, table.height);
+
+//     ctx.fillStyle = "white";
+//     ctx.font = "32px Arial  ";
+//     ctx.fillText("Snake Game", 285, 200);
+
+//     ctx.fillStyle = "#4a646c";
+//     ctx.fillRect(285, 300, 130, 50);
+//     ctx.fillStyle = "white";
+//     ctx.font = "32px Arial  ";
+//     ctx.fillText("Start", 315, 335);
+//     ctx.shadowColor = '#92bdff';
+//     ctx.shadowBlur = 8;
+//     ctx.shadowOffsetX = 5;
+
+//     //clicking the button starts the game
+//     table.addEventListener("click", function(event) {
+//         if (event.offsetX > 50 && event.offsetX < 400 && event.offsetY > 120 && event.offsetY < 400) {
+//             startGame();
+//         }
+//     });
+// }
+
 window.onload = function() {
-    table = document.getElementById("table");
-    table.width = rows * tableSize;
-    table.height = columns * tableSize;
-
-    ctx = table.getContext("2d");
-
-    ctx.fillStyle = "#8f9d99";
-    ctx.fillRect(0, 0, table.width, table.height);
-
-    ctx.fillStyle = "white";
-    ctx.font = "32px Arial  ";
-    ctx.fillText("Snake Game", 285, 200);
-
-    ctx.fillStyle = "#4a646c";
-    ctx.fillRect(285, 300, 130, 50);
-    ctx.fillStyle = "white";
-    ctx.font = "32px Arial  ";
-    ctx.fillText("Start", 315, 335);
-    ctx.shadowColor = '#92bdff';
-    ctx.shadowBlur = 8;
-    ctx.shadowOffsetX = 5;
-
-    //clicking the button starts the game
-    table.addEventListener("click", function(event) {
-        if (event.offsetX > 50 && event.offsetX < 400 && event.offsetY > 120 && event.offsetY < 400) {
-            startGame();
-        }
-    });
-}
-
-startGame = function() {
     
      table = document.getElementById("table");
      table.width = rows * tableSize;
