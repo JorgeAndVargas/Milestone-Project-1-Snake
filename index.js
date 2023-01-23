@@ -5,6 +5,7 @@ let columns = 30;
 let rows = 30;
 let ctx;
 
+
 //Creating the snake
 let snakeX = tableSize * 5;
 let snakeY = tableSize * 5;
@@ -26,25 +27,59 @@ let scoreNumber = 0;
 //Game is over
 let gameOver = false;
 
-//When the window loads, the table is created and the apples are placed
+//When the window loads, a title screen pops up with a start button that starts the game
 window.onload = function() {
     table = document.getElementById("table");
     table.width = rows * tableSize;
     table.height = columns * tableSize;
+
     ctx = table.getContext("2d");
-    setInterval(game, 1000/10);
 
-    placeApple();
-    document.addEventListener("keydown", keyPush);
+    ctx.fillStyle = "#8f9d99";
+    ctx.fillRect(0, 0, table.width, table.height);
 
-    }
+    ctx.fillStyle = "white";
+    ctx.font = "32px Arial  ";
+    ctx.fillText("Snake Game", 285, 200);
+
+    ctx.fillStyle = "#4a646c";
+    ctx.fillRect(285, 300, 130, 50);
+    ctx.fillStyle = "white";
+    ctx.font = "32px Arial  ";
+    ctx.fillText("Start", 315, 335);
+    ctx.shadowColor = '#92bdff';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 5;
+
+    //clicking the button starts the game
+    table.addEventListener("click", function(event) {
+        if (event.offsetX > 50 && event.offsetX < 400 && event.offsetY > 120 && event.offsetY < 400) {
+            startGame();
+        }
+    });
+}
+
+startGame = function() {
+    
+     table = document.getElementById("table");
+     table.width = rows * tableSize;
+     table.height = columns * tableSize;
+    
+     ctx = table.getContext("2d");
+    
+     setInterval(game, 1000/10);
+
+     placeApple();
+     document.addEventListener("keydown", keyPush);
+
+     }
 
 //Creating the game
 function game() {
     if (gameOver) {
         return;
     }
-    
+
     //game is over
     if (snakeX < 0 || snakeX > columns*tableSize || snakeY < 0 || snakeY > rows*tableSize) {
         gameOver = true;
@@ -52,8 +87,13 @@ function game() {
     
     //Drawing the table
     function drawTable() {
-        ctx.fillStyle = "#c6f6ff";
+        ctx.fillStyle = "#afbdbb";
+        ctx.shadowColor = '#4a646c';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 5;
+        ctx.shadowOffsetY = 5;
         ctx.fillRect(0, 0, table.width, table.height);
+        
         for (let i = 0; i < rows; i++) {
             ctx.moveTo(i * tableSize, 0);
             ctx.lineTo(i * tableSize, table.height);
@@ -62,21 +102,21 @@ function game() {
             ctx.moveTo(0, i * tableSize);
             ctx.lineTo(table.width, i * tableSize);
         }
-        ctx.strokeStyle = "#a9d8fc";
+        ctx.strokeStyle = "#717c7a";
         ctx.stroke();
 
     }
-
+    
     //Drawing the score
     function drawScore() {
-        ctx.fillStyle = "black";
-        ctx.font = "20px Arial";
-        ctx.fillText("Score: " + scoreNumber, 10, 20);
+        ctx.fillStyle = "#4a646c";
+        ctx.font = "bold 32px Arial  ";
+        ctx.fillText("Score: " + scoreNumber, 10, 40);
         }
 
     //Drawing the apples
     function drawApple() {
-        ctx.fillStyle = "#93b9fd";
+        ctx.fillStyle = "#5d777f";
         ctx.fillRect(appleX, appleY, tableSize, tableSize);
 
         //if the snake eats the apple, the snake grows
@@ -93,17 +133,16 @@ function game() {
             snakeBody[0] = [snakeX, snakeY];
         }
 
+
     }
 
     //Drawing the snake
     function drawSnake() {
-        ctx.fillStyle = "#99c4f7 ";
-        ctx.shadowColor = '#92bdff';
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetX = 5;
-        ctx.shadowOffsetY = 5;
+        ctx.fillStyle = "#5d777f";
+
         snakeX += velocityX * tableSize;
         snakeY += velocityY * tableSize;
+        
         ctx.fillRect(snakeX, snakeY, tableSize, tableSize);
         for (let i = 0; i < snakeBody.length; i++) {
             ctx.fillRect(snakeBody[i][0], snakeBody[i][1], tableSize, tableSize);
@@ -116,26 +155,57 @@ function game() {
             }
         }
 
-        //if the game is over, an image is displayed and the score disappears
+        // When the game is over, a menu pops up with the score number and a button to restart the game
         if (gameOver) {
-            ctx.fillStyle = "black";
-            ctx.font = "20px Arial";
-            ctx.fillText("Game Over", 10, 20);
-            ctx.drawImage(document.getElementById("gameOver"), 0, 0, 750, 750);
+            ctx.fillStyle = "#8f9d99";
+            ctx.fillRect(0, 0, table.width, table.height);
+
+            ctx.fillStyle = "white";
+            ctx.font = "32px Arial  ";
+            ctx.fillText("Game Over", 285, 200);
+
+            ctx.fillText("Score: " + scoreNumber, 285, 250);
+            ctx.fillStyle = "#4a646c";
+            
+            ctx.fillRect(285, 300, 130, 50);
+            ctx.fillStyle = "white";
+            ctx.font = "32px Arial  ";
+            ctx.fillText("Restart", 295, 335);
+            ctx.shadowColor = '#92bdff';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 5;
+
+            drawApple = false;
+            drawSnake = false;
+
+            //clicking the button restarts the game
+            table.addEventListener("click", function(event) {
+                if (event.offsetX > 50 && event.offsetX < 400 && event.offsetY > 120 && event.offsetY < 335) {
+                    snakeX = tableSize * 5;
+                    snakeY = tableSize * 5;
+                    velocityX = 0;
+                    velocityY = 0;
+                    snakeBody = [];
+                    gameOver = false;
+                    scoreNumber = 0;
+                    placeApple();
+                    setInterval(game, 100/10);
+                }
+            });
         }
 
-
-        //if the game ends, the snake is reset
-        if (gameOver) {
-            snakeX = tableSize * 5;
-            snakeY = tableSize * 5;
-            velocityX = 0;
-            velocityY = 0;
-            snakeBody = [];
-            gameOver = false;
-            scoreNumber = 0;
-            placeApple();
-        }
+        // //if the game ends, the snake is reset
+        // if (gameOver) {
+        //     snakeX = tableSize * 5;
+        //     snakeY = tableSize * 5;
+        //     velocityX = 0;
+        //     velocityY = 0;
+        //     snakeBody = [];
+        //     gameOver = false;
+        //     scoreNumber = 0;
+        //     placeApple();
+        // }
+        
 
     }
 
@@ -175,4 +245,18 @@ function keyPush(event) {
             break;
     }
 }
+
+
+
+// //creates a button that restarts the game when clicked
+// function restart() {
+//     snakeX = tableSize * 5;
+//     snakeY = tableSize * 5;
+//     velocityX = 0;
+//     velocityY = 0;
+//     snakeBody = [];
+//     gameOver = false;
+//     scoreNumber = 0;
+//     placeApple();
+// }
 
